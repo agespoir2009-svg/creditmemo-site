@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crédit Mémo — Gérez vos crédits clients</title>
+<meta name="description" content="Crédit Mémo : l’application Android pour suivre les dettes et paiements de vos clients, 100 % hors ligne.">
+<meta name="theme-color" content="#0a2a9e">
+<script>document.documentElement.classList.add("js")</script>
+<style>
+:root{
+  --bg:#f3f7ff; --card:#ffffff; --ink:#0c1b6b; --muted:#5e6fb5; --line:#dce6ff;
+  --blue:#1550f5; --navy:#0a2a9e; --cyan:#27c8ff; --soft:#e6eeff;
+  --shadow:0 10px 30px rgba(26,63,191,.14);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#050d33; --card:#0c1a5a; --ink:#eaf0ff; --muted:#9fb2f0; --line:#1c2f85; --soft:#13236e;
+    --shadow:0 10px 30px rgba(0,0,0,.4); color-scheme:dark;
+  }
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top,0px)}
+.bar{display:flex;align-items:center;gap:12px;height:62px}
+.logo{width:40px;height:40px;border-radius:12px;background:#fff;color:var(--blue);display:grid;place-items:center;font-weight:900;font-size:17px;
+  box-shadow:0 4px 12px rgba(10,42,158,.25);border:1px solid var(--line)}
+.brand{font-weight:800;font-size:18px;flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:999px;font-weight:800;text-decoration:none;
+  padding:12px 22px;font-size:15px;border:0;cursor:pointer;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(90deg,#1e6bff,#0a2a9e);color:#fff;box-shadow:0 8px 20px rgba(21,80,245,.4)}
+.btn-light{background:#fff;color:var(--navy)}
+.btn-big{padding:16px 30px;font-size:17px}
+.hero{background:linear-gradient(135deg,#05185f 0%,#0a33c4 55%,#1c6bff 100%);color:#fff;overflow:hidden;position:relative}
+.hero::after{content:"";position:absolute;inset:auto -10% -90px -10%;height:180px;background:var(--bg);border-radius:50% 50% 0 0/100% 100% 0 0}
+.hero-in{display:grid;gap:36px;padding:44px 0 110px;align-items:center;justify-items:center;text-align:center;position:relative;z-index:1}
+@media(min-width:820px){.hero-in{padding:70px 0 140px}}
+.pill{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;margin-bottom:16px}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:900}
+.lead{font-size:18px;opacity:.92;margin:16px auto 26px;max-width:520px}
+.note{font-size:13.5px;opacity:.85;margin-top:14px}
+.phone-wrap{display:flex;justify-content:center}
+.phone{width:250px;border-radius:38px;background:#061552;padding:10px;box-shadow:0 30px 60px rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.2)}
+.screen{border-radius:30px;background:var(--bg);overflow:hidden;height:470px;position:relative;color:#0c1b6b}
+.s-head{background:linear-gradient(135deg,#05185f,#1c6bff);color:#fff;padding:22px 16px 26px;border-radius:0 0 28px 28px}
+.s-head b{font-size:17px;display:block}.s-head small{opacity:.85;font-size:11px}
+.s-hello{font-size:24px;font-weight:900;margin-top:14px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 12px}
+.tile{border-radius:16px;padding:10px 4px;text-align:center;font-size:10px;font-weight:700}
+.tile span{display:block;font-size:15px;font-weight:900;margin-top:4px}
+.t1{background:#ffe3d2;color:#e8480c}.t2{background:#d2f5df;color:#0b6b34}.t3{background:#d8e4ff;color:#0a2a9e}
+.row{margin:0 12px 8px;background:#fff;border-radius:16px;padding:9px 10px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;box-shadow:0 4px 10px rgba(26,63,191,.1)}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(#2d6bff,#0a2a9e);flex:none}
+.av.o{background:linear-gradient(#ffa11a,#ff4a00)}
+.row em{margin-left:auto;font-style:normal;border-radius:999px;padding:3px 8px;font-size:10px}
+.red{background:#ffd6d6;color:#e11d1d}.grn{background:#d2f5df;color:#0f8a3e}
+.nav{position:absolute;left:10px;right:10px;bottom:10px;height:44px;border-radius:22px;background:#06154f;display:flex;justify-content:space-around;align-items:center;color:#fff;font-size:9px}
+.nav i{width:34px;height:34px;border-radius:50%;background:linear-gradient(#3d8bff,#0a33c4);display:grid;place-items:center;font-style:normal;font-size:20px;margin-top:-18px;border:3px solid rgba(255,255,255,.7)}
+section{padding:56px 0}
+h2{font-size:clamp(26px,4vw,36px);letter-spacing:-.01em;font-weight:900;text-align:center}
+.sub{color:var(--muted);text-align:center;max-width:560px;margin:10px auto 34px}
+.grid{display:grid;gap:16px}
+@media(min-width:620px){.grid.f{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.grid.f{grid-template-columns:repeat(3,1fr)}.grid.s{grid-template-columns:repeat(3,1fr)}}
+.card{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+.ico{width:52px;height:52px;border-radius:16px;background:var(--soft);display:grid;place-items:center;font-size:26px;margin:0 auto 12px}
+.card h3{font-size:18px;margin-bottom:4px}.card p{color:var(--muted);font-size:15px}
+.num{width:38px;height:38px;border-radius:50%;background:linear-gradient(#2d6bff,#0a2a9e);color:#fff;font-weight:900;display:grid;place-items:center;margin:0 auto 12px}
+.band{background:color-mix(in srgb,var(--soft) 72%,transparent)}
+.reviews{display:grid;gap:16px}
+@media(min-width:760px){.reviews{grid-template-columns:repeat(3,1fr)}}
+.stars{color:#ffb400;letter-spacing:2px;margin-bottom:6px}
+.empty{text-align:center;padding:30px 22px}
+details{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin-bottom:10px}
+summary{font-weight:800;cursor:pointer}
+details p{color:var(--muted);margin-top:8px;font-size:15px}
+.cta{background:linear-gradient(135deg,#05185f,#1c6bff);color:#fff;border-radius:32px;padding:40px 24px;text-align:center}
+.cta p{opacity:.9;margin:8px 0 22px}
+footer{padding:30px 0 40px;text-align:center;color:var(--muted);font-size:14px}
+
+/* ===== animations ===== */
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:translateY(50px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(26px,-30px)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}70%{box-shadow:0 0 0 18px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.blob{position:absolute;border-radius:50%;background:rgba(255,255,255,.08);animation:drift 9s ease-in-out infinite}
+.b1{width:240px;height:240px;top:-70px;left:-60px}
+.b2{width:170px;height:170px;bottom:70px;right:-40px;animation-delay:-4s}
+.b3{width:90px;height:90px;top:40%;left:12%;animation-delay:-2s;background:rgba(39,200,255,.15)}
+.hero .pill{animation:up .8s .05s both}
+.hero h1{animation:up .8s .2s both}
+.hero .lead{animation:up .8s .35s both}
+.hero .btn-light{animation:up .8s .5s both,pulse 2.4s 1.6s infinite}
+.hero .note{animation:up .8s .65s both}
+.phone-wrap{animation:pop 1s .6s both}
+.phone{animation:float 5.5s 1.6s ease-in-out infinite}
+.nav i{animation:bob 2.2s ease-in-out infinite}
+.cta .btn-light{animation:pulse 2.4s infinite}
+.btn-primary:hover,.btn-light:hover{transform:translateY(-2px)}
+.js .reveal{opacity:0;transform:translateY(30px) scale(.98);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.js .reveal.done{transition:transform .25s ease,box-shadow .25s ease}
+.card.reveal.done:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(26,63,191,.25)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js .reveal{opacity:1;transform:none}}
+
+/* ===== fond animé de la page ===== */
+@keyframes wander1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18vw,14vh) scale(1.25)}}
+@keyframes wander2{0%,100%{transform:translate(0,0) scale(1.1)}50%{transform:translate(-20vw,-12vh) scale(.85)}}
+@keyframes wander3{0%,100%{transform:translate(0,0)}33%{transform:translate(-14vw,16vh)}66%{transform:translate(12vw,-10vh)}}
+.bgfx{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bgfx i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
+.g1{width:55vmax;height:55vmax;left:-20vmax;top:5vh;background:rgba(21,80,245,.28);animation:wander1 18s ease-in-out infinite}
+.g2{width:45vmax;height:45vmax;right:-18vmax;top:35vh;background:rgba(39,200,255,.30);animation:wander2 22s ease-in-out infinite}
+.g3{width:40vmax;height:40vmax;left:15vw;bottom:-20vmax;background:rgba(10,42,158,.25);animation:wander3 26s ease-in-out infinite}
+.g4{width:28vmax;height:28vmax;right:10vw;top:-8vmax;background:rgba(255,180,0,.14);animation:wander2 30s ease-in-out infinite reverse}
+</style>
+</head>
+<body>
+<div class="bgfx" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="g3"></i><i class="g4"></i></div>
+
+<header><div class="wrap bar">
+  <div class="logo">CM</div><div class="brand">Crédit Mémo</div>
+  <a class="btn btn-primary" data-apk href="#">Télécharger</a>
+</div></header>
+
+<div class="hero"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><div class="wrap hero-in">
+  <div>
+    <h1>Avec Crédit Mémo, gérez les crédits de vos clients, simplement.</h1>
+    <p class="lead">Et notez chaque dette et chaque paiement en un instant.</p>
+    <a class="btn btn-light btn-big" data-apk href="#">⬇ Télécharger pour Android</a>
+  </div>
+  <div class="phone-wrap" aria-hidden="true">
+    <div class="phone"><div class="screen">
+      <div class="s-head"><b>Crédit Mémo</b><small>Ton outil de gestion de crédits</small><div class="s-hello">👋 Bonjour !</div></div>
+      <div class="tiles">
+        <div class="tile t1">Dette totale<span>22 500 F</span></div>
+        <div class="tile t2">Paiements<span>10 500 F</span></div>
+        <div class="tile t3">Clients<span>4</span></div>
+      </div>
+      <div class="row"><div class="av"></div>Jean Dupont<em class="red">10 000 F</em></div>
+      <div class="row"><div class="av o"></div>Marie Togo<em class="grn">0 F</em></div>
+      <div class="row"><div class="av"></div>Koffi Mensah<em class="red">7 500 F</em></div>
+      <div class="nav"><span>Accueil</span><span>Clients</span><i>+</i><span>Historique</span><span>Réglages</span></div>
+    </div></div>
+  </div>
+</div></div>
+
+<section id="fonctions"><div class="wrap">
+  <h2>Tout ce qu’il faut, rien de compliqué</h2>
+  <p class="sub">Une application pensée pour les commerçants qui vendent à crédit.</p>
+  <div class="grid f">
+    <div class="card"><div class="ico">📴</div><h3>Fonctionne sans Internet</h3><p>Vos données sont enregistrées sur votre téléphone. Pas de réseau, pas de problème.</p></div>
+    <div class="card"><div class="ico">👥</div><h3>Vos clients au même endroit</h3><p>Nom, téléphone et dette de chaque client, avec une recherche rapide.</p></div>
+    <div class="card"><div class="ico">💸</div><h3>Dettes et paiements</h3><p>Enregistrez une dette ou un paiement : le solde du client se met à jour tout seul.</p></div>
+    <div class="card"><div class="ico">🕘</div><h3>Historique complet</h3><p>Filtrez par entrées, sorties, client ou période pour tout retrouver.</p></div>
+    <div class="card"><div class="ico">🔒</div><h3>Protégé par mot de passe</h3><p>Verrouillez l’application. L’empreinte digitale est possible si votre version l’inclut.</p></div>
+    <div class="card"><div class="ico">⚡</div><h3>Rapide à utiliser</h3><p>Deux champs et un bouton : une opération s’enregistre en quelques secondes.</p></div>
+  </div>
+</div></section>
+
+<section class="band" id="installer"><div class="wrap">
+  <h2>Installer en 3 étapes</h2>
+  <p class="sub">L’application ne vient pas du Play Store : Android demandera une autorisation, c’est normal.</p>
+  <div class="grid s">
+    <div class="card"><div class="num">1</div><h3>Téléchargez</h3><p>Touchez « Télécharger » et gardez le fichier <b>creditmemo.apk</b>.</p></div>
+    <div class="card"><div class="num">2</div><h3>Autorisez</h3><p>Ouvrez le fichier. Si Android le demande, activez « Installer des applications inconnues » pour votre navigateur.</p></div>
+    <div class="card"><div class="num">3</div><h3>Installez et ouvrez</h3><p>Touchez « Installer », puis ouvrez Crédit Mémo et ajoutez votre premier client.</p></div>
+  </div>
+</div></section>
+
+<section id="avis"><div class="wrap">
+  <h2>Avis des utilisateurs</h2>
+  <p class="sub">Ce que disent celles et ceux qui utilisent Crédit Mémo.</p>
+  <div class="reviews" id="reviews"></div>
+</div></section>
+
+<section class="band" id="faq"><div class="wrap" style="max-width:720px">
+  <h2>Questions fréquentes</h2><p class="sub"></p>
+  <details><summary>L’application est-elle vraiment hors ligne ?</summary><p>Oui. Clients, dettes et paiements sont stockés uniquement sur votre téléphone, aucun serveur n’est utilisé.</p></details>
+  <details><summary>Que se passe-t-il si je désinstalle l’application ?</summary><p>Les données sont effacées avec elle. Gardez l’application installée et protégez-la avec un mot de passe.</p></details>
+  <details><summary>Pourquoi Android affiche-t-il un avertissement ?</summary><p>Le fichier est installé en dehors du Play Store. Android demande simplement votre accord avant d’installer.</p></details>
+  <details><summary>Sur quels téléphones ça marche ?</summary><p>Sur Android 7.0 ou plus récent. Il n’existe pas de version iPhone pour le moment.</p></details>
+</div></section>
+
+<section><div class="wrap" style="max-width:760px">
+  <div class="cta">
+    <h2 style="color:#fff">Prêt à ne plus rien oublier ?</h2>
+    <p>Téléchargez Crédit Mémo et commencez en deux minutes.</p>
+    <a class="btn btn-light btn-big" data-apk href="#">⬇ Télécharger pour Android</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">© <span id="y"></span> Crédit Mémo · <span id="contact"></span></div></footer>
+
+<script>
+/* ===== À MODIFIER ===== */
+var CONFIG = {
+  apkUrl: "creditmemo.apk",          // lien du fichier APK (ou lien GitHub Releases)
+  whatsapp: "228XXXXXXXX",           // votre numéro avec indicatif, sans + ni espaces
+  reviews: [
+    // Ajoutez de VRAIS avis ici, par exemple :
+    // { name: "Awa D.", text: "Très pratique pour ma boutique.", stars: 5 }
+  ]
+};
+/* ====================== */
+document.querySelectorAll("[data-apk]").forEach(function(a){ a.href = CONFIG.apkUrl; a.setAttribute("download",""); });
+document.getElementById("y").textContent = new Date().getFullYear();
+
+var hasWa = CONFIG.whatsapp && !/X/i.test(CONFIG.whatsapp);
+var waLink = hasWa ? "https://wa.me/" + CONFIG.whatsapp : null;
+if (waLink) document.getElementById("contact").innerHTML = '<a href="' + waLink + '">Nous contacter sur WhatsApp</a>';
+
+var box = document.getElementById("reviews");
+function esc(s){ var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+if (CONFIG.reviews.length) {
+  box.innerHTML = CONFIG.reviews.map(function(r){
+    var n = Math.max(0, Math.min(5, r.stars || 5));
+    return '<div class="card"><div class="stars">' + "★".repeat(n) + "☆".repeat(5 - n) + '</div><p style="color:var(--ink)">« ' + esc(r.text) + ' »</p><p style="margin-top:8px;font-weight:700">' + esc(r.name) + '</p></div>';
+  }).join("");
+} else {
+  box.style.display = "block";
+  box.innerHTML = '<div class="card empty"><div class="ico" style="margin:0 auto 12px">💬</div><h3>Soyez le premier à donner votre avis</h3><p>Vous avez essayé Crédit Mémo ? Racontez-nous votre expérience.</p>' +
+    (waLink ? '<p style="margin-top:16px"><a class="btn btn-primary" href="' + waLink + '">Donner mon avis sur WhatsApp</a></p>' : '') + '</div>';
+}
+
+/* apparition au défilement */
+(function(){
+  var els = document.querySelectorAll("section h2,section .sub,.card,details,.cta");
+  els.forEach(function(e){
+    e.classList.add("reveal");
+    var i = Array.prototype.indexOf.call(e.parentNode.children, e);
+    e.style.transitionDelay = (i % 3) * 90 + "ms";
+  });
+  function show(e){
+    e.classList.add("in");
+    setTimeout(function(){ e.style.transitionDelay = ""; e.classList.add("done"); }, 1300);
+  }
+  if (!("IntersectionObserver" in window)) { els.forEach(show); return; }
+  var io = new IntersectionObserver(function(list){
+    list.forEach(function(en){ if (en.isIntersecting) { show(en.target); io.unobserve(en.target); } });
+  }, { threshold: 0.15 });
+  els.forEach(function(e){ io.observe(e); });
+})();
+</script>
+</body>
+</html>
